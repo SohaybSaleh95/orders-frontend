@@ -1,6 +1,9 @@
 import '../styles/globals.css'
+import '../styles/login-signup.css'
+import '../styles/navbar.css'
 
 function MyApp({ Component, pageProps }) {
+
   return <Component {...pageProps} />
 }
 
