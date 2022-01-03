@@ -7,15 +7,15 @@ export default function NavBar() {
 
         <ul className="navbar-nav">
             <li className="nav-item">
-                <a className="nav-link" href="">طلبات الطرود</a>
-            </li>
-
-            <li className="nav-item">
                 <a className="nav-link" href="">المعلومات الشخصية</a>
             </li>
 
             <li className="nav-item">
-                <a className="nav-link" href="">إضافة طلب</a>
+                <a className="nav-link" href="/Customer/service-request">طلب خدمة</a>
+            </li>
+
+            <li className="nav-item">
+                <a className="nav-link" href="">تقديم خدمة</a>
             </li>
 
             <li className="nav-item" >
