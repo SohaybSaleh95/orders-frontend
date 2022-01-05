@@ -1,8 +1,12 @@
 import NavBar from "./navbar";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
+import {useState} from "react";
 
 export default function ServiceRequest() {
+    const [carInfo, setCarInfo] = useState(false);
+
+
     return (
         <div>
 
@@ -14,7 +18,7 @@ export default function ServiceRequest() {
     <div className="card-header">تقديم خدمة</div>
     <div className="card-body">
 
-        <div className="row mb-5 row form-group">
+        <div className = {carInfo ? 'hidden' : 'row mb-5 row form-group'} >
             <label className="col-sm-2">نوع السيارة</label>
             <div className="col-sm-4">
                 <input className="form-control" type="text"/>
@@ -26,16 +30,32 @@ export default function ServiceRequest() {
             </div>
         </div>
 
-        <div className="row mb-5 row form-group">
-
-            <label className="col-sm-2">من مدينة</label>
+        <div className = {carInfo ? 'hidden' : 'row mb-5 row form-group'}>
+            <label className="col-sm-2"> عدد مقاعد السيارة</label>
             <div className="col-sm-4">
                 <input className="form-control" type="text"/>
             </div>
 
-            <label className="col-sm-2">إلى مدينة</label>
+            <label className="col-sm-2"> عدد الراكبين </label>
             <div className="col-sm-4">
                 <input className="form-control" type="text"/>
+            </div>
+        </div>
+
+        <div className="row mb-5 row form-group">
+
+            <label className="col-sm-2">من مدينة</label>
+            <div className="col-sm-4">
+                <select className="form-control" id="gender" name="gender">
+                    <option selected={true} disabled={true} value="">-- اختر المدينة --</option>
+                </select>
+            </div>
+
+            <label className="col-sm-2">إلى مدينة</label>
+            <div className="col-sm-4">
+                <select className="form-control" id="gender" name="gender">
+                    <option selected={true} disabled={true} value="">-- اختر المدينة --</option>
+                </select>
             </div>
 
         </div>
@@ -54,25 +74,14 @@ export default function ServiceRequest() {
 
         </div>
 
-        <div className="row mb-5 row form-group">
-            <label className="col-sm-2"> عدد مقاعد السيارة</label>
-            <div className="col-sm-4">
-                <input className="form-control" type="text"/>
-            </div>
-
-            <label className="col-sm-2"> عدد الراكبين </label>
-            <div className="col-sm-4">
-                <input className="form-control" type="text"/>
-            </div>
-        </div>
 
         <div className="row mb-4 row form-group">
             <label className="col-sm-3">هل ترغب وسيلة النقل بنقل شخص معها ؟</label>
-            <div className="col-sm-3">
-            <input type="radio" value="yes" name="yes" /> Yes
+            <div className="col-sm-1">
+            <input type="radio" value="yes" name="yes" /> نعم
             </div>
-            <div className="col-sm-3">
-            <input type="radio" value="no" name="no" /> No
+            <div className="col-sm-1">
+            <input type="radio" value="no" name="no" /> لا
             </div>
         </div>
 

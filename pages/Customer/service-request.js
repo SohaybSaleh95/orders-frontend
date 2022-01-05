@@ -25,12 +25,16 @@ export default function ServiceRequest() {
 
                             <label className="col-sm-2">من مدينة</label>
                             <div className="col-sm-4">
-                                <input className="form-control" type="text"/>
+                                <select className="form-control" id="gender" name="gender">
+                                    <option selected={true} disabled={true} value="">-- اختر المدينة --</option>
+                                </select>
                             </div>
 
                             <label className="col-sm-2">إلى مدينة</label>
                             <div className="col-sm-4">
-                                <input className="form-control" type="text"/>
+                                <select className="form-control" id="gender" name="gender">
+                                    <option selected={true} disabled={true} value="">-- اختر المدينة --</option>
+                                </select>
                             </div>
 
                         </div>
@@ -56,13 +60,7 @@ export default function ServiceRequest() {
                             </div>
                         </div>
 
-                        <div className="row form-group">
-                            <label className="col-sm-2 ">
-                                بحث
-                                <i className="fa fa-search fa-lg"></i>
-                            </label>
 
-                        </div>
 
                         <div className="full-width text-center">
                                 <button className="btn btn-primary">تسجيل الخدمة</button>

@@ -20,7 +20,7 @@ export default function NavBar() {
             </li>
 
             <li className="nav-item">
-                <a className="nav-link" href="/Customer/providing-service">تقديم خدمة</a>
+                <a className="nav-link" href="">تقديم خدمة</a>
             </li>
 
             <li className="nav-item" >

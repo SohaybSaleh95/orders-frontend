@@ -45,8 +45,13 @@ export default function Personal() {
 
                             <label className="col-sm-2">الجنس</label>
                             <div className="col-sm-4">
-                                <input className="form-control" type="text" />
+                                <select className="form-control" id="gender" name="gender">
+                                    <option selected={true} disabled={true} value="">-- اختر الجنس --</option>
+                                    <option value="male">ذكر</option>
+                                    <option value="female">انثى</option>
+                                </select>
                             </div>
+
 
                             <label className="col-sm-2">تاريخ الميلاد</label>
                             <div className="col-sm-4">
@@ -62,10 +67,6 @@ export default function Personal() {
                                 <input className="form-control" type="password" placeholder="********" />
                             </div>
 
-                            <label className="col-sm-2">تأكيد الرقم السري</label>
-                            <div className="col-sm-4">
-                                <input className="form-control" type="password" placeholder="********" />
-                            </div>
 
                         </div>
 
