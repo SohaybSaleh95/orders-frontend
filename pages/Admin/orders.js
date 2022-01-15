@@ -1,11 +1,14 @@
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
+import { Modal } from 'react-bootstrap'
 import { toast } from 'react-toastify'
-import { getOrders, updateStatus } from '../../services/orders'
+import { deleteOrder, getOrders, updateStatus } from '../../services/orders'
 import CustomerLayout from './layout'
 
 export default function Orders() {
     const [services, setServices] = useState([])
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [selectedService, setSelectedService] = useState(null)
 
     useEffect(() => {
         loadServices()
@@ -25,6 +28,23 @@ export default function Orders() {
             }).catch((error) => {
                 toast.error(error?.response?.data?.errorMessage || 'حدث خطأ في العملية')
             })
+    }
+
+    const onDeleteClicked = (service) => {
+        setSelectedService(service)
+        setShowDeleteModal(true)
+    }
+
+    const onDeleteModalClosed = (result) => {
+        if (result) {
+            deleteOrder(selectedService._id)
+                .then(() => {
+                    loadServices()
+                    setShowDeleteModal(false)
+                }).catch((error) => {
+                    toast.error(error?.response?.data?.errorMessage || 'حدث خطأ في العملية')
+                })
+        }
     }
 
     return (
@@ -74,13 +94,16 @@ export default function Orders() {
                                 <th>
                                     الحالة
                                 </th>
+                                <th>
+
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 !services.length &&
                                 <tr>
-                                    <td colSpan={11}>
+                                    <td colSpan={12}>
                                         لم يتم العثور على طلبات سابقة
                                     </td>
                                 </tr>
@@ -136,6 +159,11 @@ export default function Orders() {
                                                     <option value="DELIVERED">تم التسليم</option>
                                                 </select>
                                             </td>
+                                            <td>
+                                                <button className='btn btn-danger' onClick={() => onDeleteClicked(service)}>
+                                                    <i className='fa fa-trash' />
+                                                </button>
+                                            </td>
                                         </tr>
                                     )
                                 })
@@ -144,6 +172,22 @@ export default function Orders() {
                     </table>
                 </div>
             </div>
+
+            <Modal show={showDeleteModal} onHide={onDeleteModalClosed}>
+                <Modal.Body>
+                    <div className='text-right'>
+                        هل أنت متأكد انك تريد حذف هذا الطلب
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className='btn btn-secondary' onClick={() => onDeleteModalClosed(false)}>
+                        لا
+                    </button>
+                    <button className='btn btn-primary' onClick={() => onDeleteModalClosed(true)}>
+                        نعم
+                    </button>
+                </Modal.Footer>
+            </Modal>
         </CustomerLayout>
     )
 }

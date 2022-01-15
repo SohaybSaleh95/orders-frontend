@@ -1,4 +1,4 @@
-import { get, post, put } from "./http"
+import { deleteApi, get, post, put } from "./http"
 
 export const createOrder = (data) => {
     return post('/orders', data);
@@ -14,4 +14,8 @@ export const getOrders = (params = {}) => {
 
 export const updateStatus = (id, status) => {
     return put('/orders/' + id + '/status', { status: status })
+}
+
+export const deleteOrder = (id) => {
+    return deleteApi('/orders/' + id)
 }
