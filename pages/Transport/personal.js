@@ -1,11 +1,10 @@
-import React from 'react'
-import CustomerLayout from "./layout";
+import TransportLayout from "./layout";
 import PersonalForm from "../personalForm";
 
 export default function Personal() {
     return (
-        <CustomerLayout>
+        <TransportLayout>
             <PersonalForm />
-        </CustomerLayout>
+        </TransportLayout>
     )
 }

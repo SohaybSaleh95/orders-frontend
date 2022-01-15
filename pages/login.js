@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import axios from "axios";
 import './../config';
 
@@ -12,7 +12,7 @@ export default function LoginForm() {
     );
 
     const InfoChange = (e) => {
-        let {name, value} = e.target;
+        let { name, value } = e.target;
         setForm((prevData) => ({
             ...prevData,
             [name]: value
@@ -23,12 +23,19 @@ export default function LoginForm() {
     const login = () => {
         if (form.phone == '' || form.password == '') {
             alert('يجب ملئ كافة الحقول')
-            return ;
+            return;
         }
 
-        axios.post(global.config.server + `/auth/login`,form).then(res => {
+        axios.post(global.config.server + `/auth/login`, form).then(res => {
             localStorage.setItem('token', res.data.token)
-            window.location = '/Customer/service-request'
+            localStorage.setItem('user', JSON.stringify(res.data.user))
+            if (res.data.user.type === 'Admin') {
+                window.location = '/Admin'
+            } else if (res.data.user.type === 'Transport') {
+                window.location = '/Transport/providing-service'
+            } else {
+                window.location = '/Customer/service-request'
+            }
         }).catch(error => {
             alert(error.response.data.errorMessage)
         });
@@ -39,14 +46,14 @@ export default function LoginForm() {
             <div id="formContent">
 
                 <div className="fadeIn first">
-                    <img src="/imgs/orders.png" id="icon" alt="User Icon"/>
+                    <img src="/imgs/orders.png" id="icon" alt="User Icon" />
                 </div>
 
                 <input type="text" id="login" className="fadeIn second input" value={form.phone} onChange={InfoChange} name="phone"
-                       placeholder="رقم الهاتف"/>
+                    placeholder="رقم الهاتف" />
                 <input type="password" id="password" className="fadeIn third input" value={form.password} onChange={InfoChange}
-                       name="password" placeholder="********"/>
-                <input type="submit" className="fadeIn fourth" value="تسجيل دخول" onClick={login}/>
+                    name="password" placeholder="********" />
+                <input type="submit" className="fadeIn fourth" value="تسجيل دخول" onClick={login} />
 
                 <div id="formFooter">
                     <a className="underlineHover" href="signup">إنشاء حساب جديد ؟</a>

@@ -1,14 +1,15 @@
-import moment from 'moment';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
-import { toast } from 'react-toastify';
-import { getCities } from '../../services/cities';
-import { createOrder, updateOrder, getOrders } from '../../services/orders';
-import CustomerLayout from "./layout";
+import moment from "moment";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { getCities } from "../../services/cities";
+import { createOrder, getOrders, updateOrder } from "../../services/orders";
+import { createService } from "../../services/services";
+import TransportLayout from "./layout";
 
 export default function ServiceRequest() {
     const router = useRouter()
-    const [form, setForm] = useState({});
+    const [form, setForm] = useState({})
     const [cities, setCities] = useState([])
     const [orders, setOrders] = useState([])
     const [selectedOrder, setSelectedOrder] = useState(null)
@@ -22,10 +23,15 @@ export default function ServiceRequest() {
     }, [form])
 
     const loadCities = () => {
-        getCities().
-            then((res) => {
-                setCities(res.data)
-            }).catch(() => { })
+        getCities().then((res) => {
+            setCities(res.data)
+        }).catch(() => { })
+    }
+
+    const minDate = () => {
+        const date = new Date().toISOString();
+        const lastIndex = date.lastIndexOf(':');
+        return date.substring(0, lastIndex);
     }
 
     const infoChange = (e) => {
@@ -39,18 +45,12 @@ export default function ServiceRequest() {
     const loadOrders = () => {
         getOrders({
             ...form,
-            type: 'order'
+            type: 'service'
         })
             .then((res) => {
                 setOrders(res.data)
                 setSelectedOrder(null)
             }).catch(() => { })
-    }
-
-    const minDate = () => {
-        const date = new Date().toISOString();
-        const lastIndex = date.lastIndexOf(':');
-        return date.substring(0, lastIndex);
     }
 
     const submitForm = () => {
@@ -67,17 +67,20 @@ export default function ServiceRequest() {
         }
 
         if (selectedOrder) {
+            form.order = selectedOrder
+        }
+        if (selectedOrder) {
             updateOrder(selectedOrder, form)
                 .then(() => {
                     toast.success("تم إضافة الطلب بنجاح!")
-                    router.push('/Customer/services')
+                    router.push('/Transport/orders')
                 }).catch(() => {
                     toast.error(error?.response?.data?.errorMessage || 'حدث خطأ في العملية')
                 })
         } else {
             createOrder(form).then(() => {
                 toast.success("تم إضافة الطلب بنجاح!")
-                router.push('/Customer/services')
+                router.push('/Transport/orders')
             }).catch((error) => {
                 toast.error(error?.response?.data?.errorMessage || 'حدث خطأ في العملية')
             })
@@ -85,9 +88,9 @@ export default function ServiceRequest() {
     }
 
     return (
-        <CustomerLayout>
+        <TransportLayout>
             <div className="card">
-                <div className="card-header">طلب خدمة</div>
+                <div className="card-header">تقديم خدمة</div>
                 <div className="card-body">
                     <div className="row form-group">
                         <label className="col-sm-2 required">نوع الخدمة</label>
@@ -117,13 +120,11 @@ export default function ServiceRequest() {
                             </>
                         }
                     </div>
-
                     <div className="row form-group">
-
-                        <label className="col-sm-2 required">من مدينة</label>
+                        <label className="col-sm-2">من مدينة</label>
                         <div className="col-sm-4">
                             <select className="form-control" id="fromCity" name="fromCity"
-                                value={form.fromCity} onChange={infoChange}>
+                                onChange={infoChange}>
                                 <option selected={true} disabled={true} value="">-- اختر المدينة --</option>
                                 {
                                     cities.map((city) => {
@@ -137,10 +138,10 @@ export default function ServiceRequest() {
                             </select>
                         </div>
 
-                        <label className="col-sm-2 required">إلى مدينة</label>
+                        <label className="col-sm-2">إلى مدينة</label>
                         <div className="col-sm-4">
                             <select className="form-control" id="toCity" name="toCity"
-                                value={form.toCity} onChange={infoChange}>
+                                onChange={infoChange}>
                                 <option selected={true} disabled={true} value="">-- اختر المدينة --</option>
                                 {
                                     cities.map((city) => {
@@ -153,20 +154,14 @@ export default function ServiceRequest() {
                                 }
                             </select>
                         </div>
-                    </div>
-                    <div className="row form-group">
 
-                        <label className="col-sm-2 required">من تاريخ \ وقت</label>
-                        <div className="col-sm-4">
-                            <input className="form-control" type="datetime-local" onChange={infoChange}
-                                id="date" name="date" min={minDate()} />
-                        </div>
                     </div>
+
                     <div className="row form-group">
-                        <label className="col-sm-2">معلموات اضافية \ ملاحظات</label>
-                        <div className="col-sm-10">
-                            <textarea className="form-control" rows="5" cols="5"
-                                id="notes" name="notes" onChange={infoChange}></textarea>
+                        <label className="col-sm-2">من تاريخ \ وقت</label>
+                        <div className="col-sm-4">
+                            <input className="form-control" type="datetime-local" min={minDate()}
+                                id="date" name="date" onChange={infoChange} />
                         </div>
                     </div>
                     <hr />
@@ -241,10 +236,10 @@ export default function ServiceRequest() {
                                                 {order.toCity.name}
                                             </td>
                                             <td>
-                                                {order.transportBy.name}
+                                                {order.orderBy.name}
                                             </td>
                                             <td>
-                                                {order.transportBy.phone}
+                                                {order.orderBy.phone}
                                             </td>
                                             <td>
                                                 {order.passengers}
@@ -258,11 +253,15 @@ export default function ServiceRequest() {
                             }
                         </tbody>
                     </table>
+
                     <div className="full-width text-center">
-                        <button className="btn btn-primary" onClick={submitForm}>تسجيل الخدمة</button>
+                        <button className="btn btn-primary" onClick={submitForm}>
+                            تقديم الخدمة
+                        </button>
                     </div>
+
                 </div>
             </div>
-        </CustomerLayout>
+        </TransportLayout>
     )
 }

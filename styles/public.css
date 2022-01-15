@@ -18,3 +18,28 @@
 }
 
 .hidden { display:none; }
+
+/**
+Helpers
+**/
+.mr-5 {
+    margin-right: 5px;
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
+
+.invalid-feedback {
+    display: block !important;
+    text-align: right !important;
+}
+
+.required::after {
+    content: '*';
+    color: #dc3545;
+}
+
+.text-right {
+    text-align: right;
+}
