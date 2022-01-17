@@ -45,6 +45,7 @@ export default function SignUpForm() {
 
         axios.post(global.config.server + `/auth/register`, form).then(res => {
             localStorage.setItem('token', res.data.token);
+            localStorage.setItem('user', JSON.stringify(res.data.user));
             window.location = '/Customer/service-request';
         }).catch(error => {
             alert(error.response.data.errorMessage)

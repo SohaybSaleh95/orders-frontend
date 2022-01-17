@@ -19,3 +19,7 @@ export const updateStatus = (id, status) => {
 export const deleteOrder = (id) => {
     return deleteApi('/orders/' + id)
 }
+
+export const updateRating = (id, rating) => {
+    return put('/orders/' + id + '/rating', { rating: rating })
+}
