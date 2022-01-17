@@ -1,9 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-require('dotenv').config()
-
-
 
 export default function Home() {
 
