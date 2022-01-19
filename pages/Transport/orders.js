@@ -1,8 +1,9 @@
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { getOrders } from '../../services/orders'
-import { getServices } from '../../services/services'
-import CustomerLayout from './layout'
+import Layout from '../layout'
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
 
 export default function Orders() {
     const [services, setServices] = useState([])
@@ -20,103 +21,32 @@ export default function Orders() {
         }).catch(() => { })
     }
 
+    const getOrderType = (rowData) => {
+        switch (rowData.orderType) {
+            case 'PEOPLE':
+                return 'نقل أشخاص (' + rowData.passengers + ')';
+            default:
+                return 'نقل طرد';
+        }
+    }
 
     return (
-        <CustomerLayout>
-            <div className="card">
-                <div className="card-header">
-                    <div className='d-flex justify-content-between'>
-                        <h3>
-                            الطلبات
-                        </h3>
-                    </div>
-                </div>
-                <div className="card-body">
-                    <table className='table'>
-                        <thead>
-                            <tr>
-                                <th>
-                                    نوع الخدمة
-                                </th>
-                                <th>
-                                    اسم الزبون
-                                </th>
-                                <th>
-                                    رقم الزبون
-                                </th>
-                                <th>
-                                    من مدينة
-                                </th>
-                                <th>
-                                    إلى مدينة
-                                </th>
-                                <th>
-                                    تاريخ النقل
-                                </th>
-                                <th>
-                                    وقت الإنشاء
-                                </th>
-                                <th>
-                                    ملاحظات اضافية
-                                </th>
-                                <th width="120">
-
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                !services.length &&
-                                <tr>
-                                    <td colSpan={9}>
-                                        لم يتم العثور على طلبات سابقة
-                                    </td>
-                                </tr>
-                            }
-                            {
-                                services.map((service) => {
-                                    return (
-                                        <tr key={service._id}>
-                                            <td>
-                                                {service.orderType === 'PEOPLE' ? 'نقل أشخاص' : 'نقل طرد'}
-                                                {
-                                                    service.orderType === 'PEOPLE' &&
-                                                    <span className='badge bg-primary mr-5'>
-                                                        {service.passengers}
-                                                    </span>
-                                                }
-                                            </td>
-                                            <td>
-                                                {service.orderBy?.name || 'غير محدد'}
-                                            </td>
-                                            <td>
-                                                {service.orderBy?.phone}
-                                            </td>
-                                            <td>
-                                                {service.fromCity.name}
-                                            </td>
-                                            <td>
-                                                {service.toCity.name}
-                                            </td>
-                                            <td>
-                                                {moment(service.date).format("dddd, MMMM Do YYYY, h:mm:ss a")}
-                                            </td>
-                                            <td>
-                                                {moment(service.createdAt).fromNow()}
-                                            </td>
-                                            <td>
-                                                {service.notes}
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </div>
+        <Layout>
+            <div className="card p-fluid">
+                <h5>
+                    الطلبات السابقة
+                </h5>
+                <DataTable value={services}>
+                    <Column header="نوع الخدمة" body={getOrderType} />
+                    <Column header="إسم الزبون" field='orderBy.name' />
+                    <Column header="رقم هاتف الزبون" field='orderBy.phone' />
+                    <Column header="من مدينة" field='fromCity.name' />
+                    <Column header="إلى مدينة" field='toCity.name' />
+                    <Column header="تاريخ النقل" body={(rowData) => moment(rowData.date).format("dddd, MMMM Do YYYY, h:mm:ss a")} />
+                    <Column header="وقت الإنشاء" body={(rowData) => moment(rowData.createdAt).fromNow()} />
+                    <Column header="ملاحظات إضافية" field="notes" />
+                </DataTable>
             </div>
-        </CustomerLayout>
+        </Layout>
     )
 }

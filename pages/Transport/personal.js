@@ -1,10 +1,10 @@
-import TransportLayout from "./layout";
 import PersonalForm from "../personalForm";
+import Layout from "../layout";
 
 export default function Personal() {
     return (
-        <TransportLayout>
+        <Layout>
             <PersonalForm />
-        </TransportLayout>
+        </Layout>
     )
 }

@@ -1,11 +1,11 @@
 import React from 'react'
-import CustomerLayout from "./layout";
 import PersonalForm from "../personalForm";
+import Layout from '../layout';
 
 export default function Personal() {
     return (
-        <CustomerLayout>
+        <Layout>
             <PersonalForm />
-        </CustomerLayout>
+        </Layout>
     )
 }
