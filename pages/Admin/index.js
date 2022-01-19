@@ -1,12 +1,12 @@
 import React from 'react'
-import AdminLayout from './layout';
+import Layout from '../layout';
 
 function Admin() {
 
     return (
-        <AdminLayout>
+        <Layout>
             
-        </AdminLayout>
+        </Layout>
     )
 
 }

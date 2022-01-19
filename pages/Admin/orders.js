@@ -1,14 +1,34 @@
 import moment from 'moment'
+import { Column } from 'primereact/column'
+import { DataTable } from 'primereact/datatable'
+import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown'
 import React, { useEffect, useState } from 'react'
-import { Modal } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { deleteOrder, getOrders, updateStatus } from '../../services/orders'
-import CustomerLayout from './layout'
+import Layout from '../layout'
+import { confirmDialog } from 'primereact/confirmdialog'
 
 export default function Orders() {
+    const statusOptions = [
+        {
+            label: 'جديد',
+            value: 'NEW'
+        },
+        {
+            label: 'مع المرسل',
+            value: 'WITH_SENDER'
+        },
+        {
+            label: 'مع السائق',
+            value: 'WITH_DRIVER'
+        },
+        {
+            label: 'تم التوصيل',
+            value: 'DELIVERED'
+        }
+    ]
     const [services, setServices] = useState([])
-    const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [selectedService, setSelectedService] = useState(null)
 
     useEffect(() => {
         loadServices()
@@ -22,7 +42,7 @@ export default function Orders() {
     }
 
     const statusChange = (service, e) => {
-        updateStatus(service._id, e.target.value)
+        updateStatus(service._id, e.value)
             .then(() => {
                 toast.success("تم تعديل الحالة بنجاح!")
             }).catch((error) => {
@@ -31,163 +51,63 @@ export default function Orders() {
     }
 
     const onDeleteClicked = (service) => {
-        setSelectedService(service)
-        setShowDeleteModal(true)
+        confirmDialog({
+            message: 'هل أنت متأكد انك تريد حذف الطلب؟',
+            header: 'تأكيد الحذف',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                deleteOrder(service._id)
+                    .then(() => {
+                        toast.success('تم حذف الطلب بنجاح')
+                        loadServices()
+                    }).catch((error) => {
+                        toast.error(error?.response?.data?.errorMessage || 'حدث خطأ في العملية')
+                    })
+            },
+            reject: () => { },
+            acceptLabel: 'نعم',
+            rejectLabel: 'لا'
+        });
     }
 
-    const onDeleteModalClosed = (result) => {
-        if (result) {
-            deleteOrder(selectedService._id)
-                .then(() => {
-                    loadServices()
-                    setShowDeleteModal(false)
-                }).catch((error) => {
-                    toast.error(error?.response?.data?.errorMessage || 'حدث خطأ في العملية')
-                })
+    const getOrderType = (rowData) => {
+        switch (rowData.orderType) {
+            case 'PEOPLE':
+                return 'نقل أشخاص (' + rowData.passengers + ')';
+            default:
+                return 'نقل طرد';
         }
     }
 
     return (
-        <CustomerLayout>
-            <div className="card">
-                <div className="card-header">
-                    <div className='d-flex justify-content-between'>
-                        <h3>
-                            الطلبات
-                        </h3>
-                    </div>
-                </div>
-                <div className="card-body">
-                    <table className='table'>
-                        <thead>
-                            <tr>
-                                <th>
-                                    نوع الخدمة
-                                </th>
-                                <th>
-                                    اسم الزبون
-                                </th>
-                                <th>
-                                    رقم الزبون
-                                </th>
-                                <th>
-                                    إسم السائق
-                                </th>
-                                <th>
-                                    رقم السائق
-                                </th>
-                                <th>
-                                    من مدينة
-                                </th>
-                                <th>
-                                    إلى مدينة
-                                </th>
-                                <th>
-                                    تاريخ النقل
-                                </th>
-                                <th>
-                                    وقت الإنشاء
-                                </th>
-                                <th>
-                                    ملاحظات اضافية
-                                </th>
-                                <th>
-                                    الحالة
-                                </th>
-                                <th>
-
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                !services.length &&
-                                <tr>
-                                    <td colSpan={12}>
-                                        لم يتم العثور على طلبات سابقة
-                                    </td>
-                                </tr>
-                            }
-                            {
-                                services.map((service) => {
-                                    return (
-                                        <tr key={service._id}>
-                                            <td>
-                                                {service.orderType === 'PEOPLE' ? 'نقل أشخاص' : 'نقل طرد'}
-                                                {
-                                                    service.orderType === 'PEOPLE' &&
-                                                    <span className='badge bg-primary mr-5'>
-                                                        {service.passengers}
-                                                    </span>
-                                                }
-                                            </td>
-                                            <td>
-                                                {service.orderBy?.name || 'غير محدد'}
-                                            </td>
-                                            <td>
-                                                {service.orderBy?.phone}
-                                            </td>
-                                            <td>
-                                                {service.transportBy?.name || 'غير محدد'}
-                                            </td>
-                                            <td>
-                                                {service.transportBy?.phone}
-                                            </td>
-                                            <td>
-                                                {service.fromCity.name}
-                                            </td>
-                                            <td>
-                                                {service.toCity.name}
-                                            </td>
-                                            <td>
-                                                {moment(service.date).format("dddd, MMMM Do YYYY, h:mm:ss a")}
-                                            </td>
-                                            <td>
-                                                {moment(service.createdAt).fromNow()}
-                                            </td>
-                                            <td>
-                                                {service.notes}
-                                            </td>
-                                            <td>
-                                                <select id="status" name="status"
-                                                    className='form-contorl'
-                                                    value={service.status} onChange={(e) => statusChange(service, e)}>
-                                                    <option disabled>--- اختر الحالة ---</option>
-                                                    <option value="NEW">جديد</option>
-                                                    <option value="WITH_SENDER">مع المرسل</option>
-                                                    <option value="WITH_DRIVER">مع السائق</option>
-                                                    <option value="DELIVERED">تم التسليم</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <button className='btn btn-danger' onClick={() => onDeleteClicked(service)}>
-                                                    <i className='fa fa-trash' />
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </div>
+        <Layout>
+            <div className="card p-fluid">
+                <h5>
+                    الطلبات
+                </h5>
+                <DataTable value={services}>
+                    <Column header="نوع الخدمة" body={getOrderType} />
+                    <Column header="إسم الزبون" field="orderBy.name" />
+                    <Column header="رقم الزبون" field="orderBy.phone" />
+                    <Column header="إسم السائق" field="transportBy.name" />
+                    <Column header="رقم السائق" field="transportBy.phone" />
+                    <Column header="من مدينة" field="fromCity.name" />
+                    <Column header="إلى مدينة" field="toCity.name" />
+                    <Column header="تاريخ النقل" body={(service) => moment(service.date).format("dddd, MMMM Do YYYY, h:mm:ss a")} />
+                    <Column header="وقت الإنشاء" body={(service) => moment(service.createdAt).fromNow()} />
+                    <Column header="ملاحظات إضافية" field="notes" />
+                    <Column header="الحالة" body={(service) => {
+                        return (
+                            <Dropdown options={statusOptions} value={service.status}
+                                onChange={(e) => statusChange(service, e)} />
+                        )
+                    }} />
+                    <Column header="" headerStyle={{ width: 50 }} body={(service) => {
+                        return (<Button icon="fa fa-trash" className="p-button-danger"
+                            onClick={() => onDeleteClicked(service)} />)
+                    }} />
+                </DataTable>
             </div>
-
-            <Modal show={showDeleteModal} onHide={onDeleteModalClosed}>
-                <Modal.Body>
-                    <div className='text-right'>
-                        هل أنت متأكد انك تريد حذف هذا الطلب
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <button className='btn btn-secondary' onClick={() => onDeleteModalClosed(false)}>
-                        لا
-                    </button>
-                    <button className='btn btn-primary' onClick={() => onDeleteModalClosed(true)}>
-                        نعم
-                    </button>
-                </Modal.Footer>
-            </Modal>
-        </CustomerLayout>
+        </Layout>
     )
 }

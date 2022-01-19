@@ -2,7 +2,11 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import { createCity } from '../../../services/cities'
-import AdminLayout from '../layout'
+import Layout from '../../layout'
+import { RadioButton } from 'primereact/radiobutton';
+import { InputText } from 'primereact/inputtext';
+import { Toolbar } from 'primereact/toolbar';
+import { Button } from 'primereact/button';
 
 function CityCreate() {
     const router = useRouter()
@@ -40,67 +44,45 @@ function CityCreate() {
     }
 
     return (
-        <AdminLayout>
-            <div className="card">
-                <div className="card-header">
+        <Layout>
+            <div className="card p-fluid">
+                <h5>
                     مدينة جديدة
-                </div>
-                <div className="card-body">
-                    <div className="row">
-                        <div className='col-sm-6'>
-                            <div className="row form-group">
-                                <label className="col-sm-2 required">
-                                    الإسم:
-                                </label>
-                                <div className="col-sm-10">
-                                    <input className="form-control" type="text" name="name" id="name"
-                                        value={form.name} onChange={infoChange} />
-                                    {
-                                        errors.name &&
-                                        <div className="invalid-feedback">
-                                            {errors.name}
-                                        </div>
-                                    }
-                                </div>
+                </h5>
+                <div className="p-formgrid p-grid">
+                    <div className="p-field p-col-6">
+                        <label htmlFor="name">
+                            الإسم
+                        </label>
+                        <InputText id="name" name="name" type="text"
+                            value={form.name} onChange={infoChange} />
+                        {
+                            errors.name &&
+                            <small className="p-error p-d-block">
+                                {errors.name}
+                            </small>
+                        }
+                    </div>
+                    <div className="p-field p-col-6">
+                        <label htmlFor="name2">
+                            فعال
+                        </label>
+                        <div className='p-d-flex'>
+                            <div className="p-field-radiobutton">
+                                <RadioButton name="enabled" id="enabled" value={true} onChange={infoChange} checked={form.enabled} />
+                                <label>نعم</label>
                             </div>
-                        </div>
-
-                        <div className='col-sm-6'>
-                            <div className="row form-group">
-                                <label className="col-sm-2">
-                                    فعالة:
-                                </label>
-                                <div className="col-sm-10">
-                                    <div className='d-flex justify-content-start'>
-                                        <div className="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" name="enabled" className="custom-control-input" value={true}
-                                                onChange={infoChange} checked={true} />
-                                            <label className="custom-control-label mr-5">نعم</label>
-                                        </div>
-                                        <div className="custom-control custom-radio custom-control-inline mr-10">
-                                            <input type="radio" name="enabled" className="custom-control-input"
-                                                onChange={infoChange} value={false} />
-                                            <label className="custom-control-label mr-5">
-                                                لا
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="p-field-radiobutton">
+                                <RadioButton name="enabled" id="enabled" value={false} onChange={infoChange} checked={!form.enabled} />
+                                <label>لا</label>
                             </div>
                         </div>
                     </div>
-
-
-
-                    <div className="full-width text-center">
-                        <button className="btn btn-primary" onClick={submitForm}>
-                            اضافة المدينة
-                        </button>
-                    </div>
-
                 </div>
             </div>
-        </AdminLayout>
+            <Toolbar left={<Button icon="fa fa-save" label="إضافة المدينة"
+                onClick={submitForm} />} />
+        </Layout>
     )
 }
 

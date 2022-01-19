@@ -1,8 +1,23 @@
+import { Button } from 'primereact/button'
+import { Calendar } from 'primereact/calendar'
+import { InputText } from 'primereact/inputtext'
+import { Toolbar } from 'primereact/toolbar'
+import { Dropdown } from 'primereact/dropdown'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { update } from '../services/users'
 
 export default function PersonalForm() {
+    const genders = [
+        {
+            label: 'ذكر',
+            value: 'male'
+        },
+        {
+            label: 'أنثى',
+            value: 'female'
+        }
+    ]
     const [form, setForm] = useState({})
 
     useEffect(() => {
@@ -29,92 +44,83 @@ export default function PersonalForm() {
 
     return (
         <>
-            <div className="card">
-                <div className="card-header"> المعلومات الشخصية</div>
-                <div className="card-body">
-
-                    <div className="row mb-5 row form-group">
-                        <label className="col-sm-2">الاسم الكامل</label>
-                        <div className="col-sm-4">
-                            <input className="form-control" type="text" id="name" name="name"
-                                onChange={infoChange} value={form.name} />
-                        </div>
-
-                        <label className="col-sm-2">الرقم الوطني </label>
-                        <div className="col-sm-4">
-                            <input className="form-control" type="text" id="identification"
-                                name="identification" value={form.identification} onChange={infoChange} />
-                        </div>
+            <div className="card p-fluid">
+                <h5>
+                    المعلومات الشخصية
+                </h5>
+                <div className="p-formgrid p-grid">
+                    <div className="p-field p-col-6">
+                        <label htmlFor="name">
+                            الإسم الكامل
+                        </label>
+                        <InputText id="name" name="name" type="text"
+                            value={form.name} onChange={infoChange} />
                     </div>
-
-                    <div className="row mb-5 row form-group">
-
-                        <label className="col-sm-2"> رقم الجوال</label>
-                        <div className="col-sm-4">
-                            <input className="form-control" type="text" id="phone" name="phone"
-                                value={form.phone} onChange={infoChange} />
-                        </div>
-
-                        <label className="col-sm-2"> العنوان</label>
-                        <div className="col-sm-4">
-                            <input className="form-control" type="text" id="address" name="address"
-                                value={form.address} onChange={infoChange} />
-                        </div>
-
+                    <div className="p-field p-col-6">
+                        <label htmlFor="identification">
+                            الرقم الوطني
+                        </label>
+                        <InputText id="identification" name="identification" type="text"
+                            value={form.identification} onChange={infoChange} />
                     </div>
-
-                    <div className="row mb-5 row form-group">
-
-                        <label className="col-sm-2">الجنس</label>
-                        <div className="col-sm-4">
-                            <select className="form-control" id="gender" name="gender"
-                                onChange={infoChange}>
-                                <option selected={true} disabled={true} value="">-- اختر الجنس --</option>
-                                <option value="male" selected={form.gender === 'male'}>ذكر</option>
-                                <option value="female" selected={form.gender === 'female'}>انثى</option>
-                            </select>
-                        </div>
-
-
-                        <label className="col-sm-2">تاريخ الميلاد</label>
-                        <div className="col-sm-4">
-                            <input className="form-control" type="text" id="BDate" name="BDate"
-                                onChange={infoChange} value={form.BDate} />
-                        </div>
+                    <div className="p-field p-col-6">
+                        <label htmlFor="phone">
+                            رقم الجوال
+                        </label>
+                        <InputText id="phone" name="phone" type="text"
+                            value={form.phone} onChange={infoChange} />
                     </div>
-
+                    <div className="p-field p-col-6">
+                        <label htmlFor="address">
+                            العنوان
+                        </label>
+                        <InputText id="address" name="address" type="text"
+                            value={form.address} onChange={infoChange} />
+                    </div>
+                    <div className="p-field p-col-6">
+                        <label htmlFor="gender">
+                            الجنس
+                        </label>
+                        <Dropdown value={form.gender} options={genders}
+                            id="gender" name="gender" onChange={infoChange} />
+                    </div>
+                    <div className="p-field p-col-6">
+                        <label htmlFor="gender">
+                            تاريخ الميلاد
+                        </label>
+                        <Calendar value={form.BDate} showIcon={true}
+                            id="BDate" name="BDate" onChange={infoChange} />
+                    </div>
                     {
-                        form.type === "Transport" && (
-                            <>
-                                <div className="row mb-5 row form-group">
-                                    <label className="col-sm-2">رقم السيارة</label>
-                                    <div className="col-sm-4">
-                                        <input className="form-control" type="text" id="carNumber" name="carNumber"
-                                            value={form.carNumber} onChange={infoChange} />
-                                    </div>
-                                    <label className="col-sm-2">نوع السيارة</label>
-                                    <div className="col-sm-4">
-                                        <input className="form-control" type="text" id="carType" name="carType"
-                                            value={form.carType} onChange={infoChange} />
-                                    </div>
-                                </div>
-                                <div className="row mb-5 row form-group">
-                                    <label className="col-sm-2">عدد الركاب</label>
-                                    <div className="col-sm-4">
-                                        <input className="form-control" type="number" id="numberOfPassengers" name="numberOfPassengers"
-                                            value={form.numberOfPassengers} onChange={infoChange} />
-                                    </div>
-                                </div>
-                            </>
-                        )
+                        form.type === 'Transport' &&
+                        <>
+                            <div className="p-field p-col-6">
+                                <label htmlFor="carNumber">
+                                    رقم السيارة
+                                </label>
+                                <InputText id="carNumber" name="carNumber" type="text"
+                                    value={form.carNumber} onChange={infoChange} />
+                            </div>
+                            <div className="p-field p-col-6">
+                                <label htmlFor="carType">
+                                    نوع السيارة
+                                </label>
+                                <InputText id="carType" name="carType" type="text"
+                                    value={form.carType} onChange={infoChange} />
+                            </div>
+                            <div className="p-field p-col-6">
+                                <label htmlFor="numberOfPassengers">
+                                    عدد الركاب
+                                </label>
+                                <InputText id="numberOfPassengers" name="numberOfPassengers" type="number"
+                                    value={form.numberOfPassengers} onChange={infoChange} />
+                            </div>
+                        </>
                     }
-
-                    <div className="full-width text-center">
-                        <button className="btn btn-primary" onClick={submitForm}> تعديل المعلومات</button>
-                    </div>
-
                 </div>
             </div>
+            <Toolbar left={<Button icon="fa fa-save" label="حفظ التعديلات"
+                onClick={submitForm} />} />
         </>
     )
 }
