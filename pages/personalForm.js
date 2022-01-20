@@ -89,6 +89,7 @@ export default function PersonalForm() {
                             تاريخ الميلاد
                         </label>
                         <Calendar value={form.BDate} showIcon={true}
+                            dateFormat="yy-mm-dd" monthNavigator yearNavigator yearRange="1900:2100"
                             id="BDate" name="BDate" onChange={infoChange} />
                     </div>
                     {
