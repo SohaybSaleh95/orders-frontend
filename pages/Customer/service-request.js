@@ -152,6 +152,7 @@ export default function ServiceRequest() {
                         </label>
                         <Calendar showTime showIcon={true}
                             id="date" name="date" minDate={new Date()}
+                            dateFormat="yy-mm-dd" monthNavigator yearNavigator yearRange="1900:2100"
                             onChange={infoChange} />
                     </div>
                 </div>
