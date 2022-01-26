@@ -1,3 +1,3 @@
 module.exports = global.config = {
-    server : 'https://ordersbackend.herokuapp.com'
+    server : 'http://localhost:8000'
 };

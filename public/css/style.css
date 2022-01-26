@@ -334,25 +334,25 @@ h5,
 }
 .ul-check li {
   position: relative;
-  padding-left: 35px;
+  padding-right: 35px;
   margin-bottom: 15px;
   line-height: 1.5;
 }
-.ul-check li:before {
-  left: 0;
+.ul-check li:after {
+  right: 0;
   font-size: 20px;
   top: -0.3rem;
   font-family: "icomoon";
   content: "\e5ca";
   position: absolute;
 }
-.ul-check.white li:before {
+.ul-check.white li:after {
   color: #fff;
 }
-.ul-check.success li:before {
+.ul-check.success li:after {
   color: #8bc34a;
 }
-.ul-check.primary li:before {
+.ul-check.primary li:after {
   color: #f16821;
 }
 
@@ -2076,7 +2076,7 @@ h5,
 
 /*# sourceMappingURL=style.css.map */
 
-@media (min-width: 576px) {
+@media (max-width: 576px) {
   .container {
     max-width: none;
   }
