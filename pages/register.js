@@ -78,7 +78,7 @@ export default function Register() {
                                 الرجاء تسجيل حساب جديد
                             </span>
                         </div>
-                        <div className="p-col-6">
+                        <div className="p-col-12 p-lg-6">
                             <label className='p-text-right'>
                                 الإسم الكامل
                             </label>
@@ -87,21 +87,21 @@ export default function Register() {
                                     value={form.name} onChange={InfoChange} />
                             </div>
                         </div>
-                        <div className="p-col-6">
+                        <div className="p-col-12 p-lg-6">
                             <label className='p-text-right'>رقم الهاتف</label>
                             <div className="login-input">
                                 <InputText id="phone" name='phone' type="text"
                                     value={form.phone} onChange={InfoChange} />
                             </div>
                         </div>
-                        <div className="p-col-6">
+                        <div className="p-col-12 p-lg-6">
                             <label className='p-text-right'>كلمة السر</label>
                             <div className="login-input">
                                 <InputText type="password" id="password" name="password"
                                     value={form.password} onChange={InfoChange} />
                             </div>
                         </div>
-                        <div className="p-col-6">
+                        <div className="p-col-12 p-lg-6">
                             <label className='p-text-right'>
                                 تأكيد كلمة السر
                             </label>
@@ -110,14 +110,14 @@ export default function Register() {
                                     value={form.confirmPassword} onChange={InfoChange} />
                             </div>
                         </div>
-                        <div className='p-col-6'>
+                        <div className='p-col-12 p-lg-6'>
                             <label htmlFor="gender">
                                 الجنس
                             </label>
                             <Dropdown value={form.gender} options={genders}
                                 id="gender" name="gender" onChange={InfoChange} />
                         </div>
-                        <div className="p-col-6">
+                        <div className="p-col-12 p-lg-6">
                             <label className='p-text-right'>
                                 تاريخ الميلاد
                             </label>
@@ -126,7 +126,7 @@ export default function Register() {
                                     value={form.BDate} onChange={InfoChange} />
                             </div>
                         </div>
-                        <div className='p-col-6'>
+                        <div className='p-col-12 p-lg-6'>
                             <label htmlFor="gender">
                                 نوع الحساب
                             </label>

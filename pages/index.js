@@ -1,13 +1,16 @@
 import Head from 'next/head'
 import React, { useEffect } from 'react'
+import { } from 'next'
+import Link from 'next/link'
 
 export default function LandingPage() {
-    useEffect(() => {
-        document.body.setAttribute("data-spy", "scroll")
-        document.body.setAttribute("data-target", ".site-navbar-target")
-        document.body.setAttribute("data-offset", "200")
-        document.body.setAttribute("dir", "rtl")
-    }, [])
+    const history =
+        useEffect(() => {
+            document.body.setAttribute("data-spy", "scroll")
+            document.body.setAttribute("data-target", ".site-navbar-target")
+            document.body.setAttribute("data-offset", "200")
+            document.body.setAttribute("dir", "rtl")
+        }, [])
     return (
         <>
             <Head>
@@ -74,9 +77,11 @@ export default function LandingPage() {
                                     <li><a href="#section-contact" className="nav-link">
                                         تواصل معنا
                                     </a></li>
-                                    <li><a href="/login" className="nav-link">
-                                        تسجيل الدخول
-                                    </a></li>
+                                    <li>
+                                        <Link href="/login" className="nav-link">
+                                            تسجيل الدخول
+                                        </Link>
+                                    </li>
                                 </ul>
                             </nav>
                         </div>
@@ -209,7 +214,7 @@ export default function LandingPage() {
                         </div>
                     </div>
                     <div className="row align-items-stretch text-right">
-                        <div className='col-md-2'></div> 
+                        <div className='col-md-2'></div>
                         <div className="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="500">
                             <div className="unit-4 d-flex">
                                 <div className="unit-4-icon ml-4"><span className="text-primary flaticon-worldwide"></span></div>
@@ -226,8 +231,8 @@ export default function LandingPage() {
                                 </div>
                             </div>
                         </div>
-                        <div className='col-md-2'></div> 
-                        <div className='col-md-2'></div> 
+                        <div className='col-md-2'></div>
+                        <div className='col-md-2'></div>
                         <div className="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="100">
                             <div className="unit-4 d-flex">
                                 <div className="unit-4-icon ml-4"><span className="text-primary flaticon-boat-ship"></span></div>
@@ -297,7 +302,7 @@ export default function LandingPage() {
                             </div>
                         </div>
                         <div className="col-md-3">
-                            
+
                         </div>
                     </div>
                     <div className="row pt-5 mt-5 text-center">

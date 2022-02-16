@@ -4,6 +4,7 @@ $gutter: 1rem;
 
 @import 'prismjs/themes/prism-coy.css';
 @import './AppDemo.scss';
+
 body {
     direction: rtl;
 }
@@ -20,7 +21,22 @@ body {
 
 .register-panel {
     width: 50% !important;
+
     .login-panel-content {
         margin-top: 15% !important;
+    }
+}
+
+@media screen and (max-width: 40em) {
+    .login-body .login-panel.register-panel {
+        left: 0 !important;
+        bottom: 0% !important;
+        width: 100% !important;
+        margin-bottom: 0px !important;
+        margin-top: 0 !important;
+        margin-left: 0 !important;
+        padding: 0 27px 20px 28px !important;
+        height: -moz-calc(100% - 128px) !important;
+        height: 100% !important;
     }
 }
